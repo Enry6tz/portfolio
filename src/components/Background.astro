@@ -1,0 +1,362 @@
+---
+// IMPORTS
+import { basics } from "@cv";
+import Mail from "@/components/icons/Mail.astro";
+import Phone from "@/components/icons/Phone.astro";
+import X from "@/components/icons/X.astro";
+import LinkedIn from "@/components/icons/LinkedIn.astro";
+import GitHub from "@/components/icons/GitHub.astro";
+import WorldMap from "@/components/icons/WorldMap.astro";
+
+const { name, label, image, location, profiles, phone, email } = basics;
+const { city, region } = location;
+
+const SOCIAL_ICONS = { GitHub, LinkedIn, X };
+const linkedInfo = profiles.find(({ network }) => network === "LinkedIn");
+const linkedUrl = linkedInfo?.url;
+const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
+---
+
+<div class="hero-wrapper">
+  <div class="background-paths">
+    <svg
+      viewBox="0 100 800 1080"
+      fill="none"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <div class="moving-lines">
+        <div class="moving-lines">
+          {
+            [...Array(6)].map((_, i) => (
+              <div
+                key={`line-${i}`}
+                class="moving-line"
+                style={{
+                  top: `${10 + i * 12}%`,
+                  background: `linear-gradient(90deg, transparent, ${i % 2 === 0 ? "#586f59" : "#d9a5a0"}50, transparent)`,
+                }}
+              />
+            ))
+          }
+        </div>
+
+        <div class="moving-vertical-lines">
+          {
+            [...Array(6)].map((_, i) => (
+              <div
+                key={`vline-${i}`}
+                class="moving-vertical-line"
+                style={{
+                  left: `${10 + i * 12}%`,
+                  background: `linear-gradient(180deg, transparent, ${i % 2 === 0 ? "#586f59" : "#d9a5a0"}80, transparent)`,
+                }}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </svg>
+  </div>
+  <!-- Content -->
+  <div class="hero-container">
+    <div class="info">
+      <h1>{name}</h1>
+      <h2>{label}</h2>
+      <span>
+        <WorldMap />
+        {city}, {region}
+      </span>
+      <footer class="print">{printInfo}</footer>
+      <footer class="no-print">
+        {
+          email && (
+            <a
+              href={`mailto:${email}`}
+              title={`Email: ${email}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Mail />
+            </a>
+          )
+        }
+        {
+          phone && (
+            <a
+              href={`tel:${phone}`}
+              title={`Phone: ${phone}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Phone />
+            </a>
+          )
+        }
+        {
+          profiles.map(({ network, url }) => {
+            const Icon = SOCIAL_ICONS[network];
+            return (
+              <a
+                href={url}
+                title={`Perfil en ${network}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon />
+              </a>
+            );
+          })
+        }
+      </footer>
+    </div>
+
+    <figure>
+      <img src={image} alt={name} />
+    </figure>
+  </div>
+  <slot />
+</div>
+
+<style>
+  .hero-wrapper {
+    position: relative;
+    min-height: 90vh;
+    width: 100%;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    overflow: hidden;
+    background: #e4e8d4e1;
+    background: linear-gradient(
+      0deg,
+      rgb(255, 255, 255) 0%,
+      rgb(255, 255, 255) 50%
+    );
+    border-radius: 0px 0px 12px 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .background-paths {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .background-paths svg {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+  }
+
+  .hero-container {
+    position: relative;
+    margin-top: 100px;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    max-width: 1200px;
+    width: 100%;
+    padding: 2rem;
+    background: #ffffffcd;
+    border-radius: 1rem;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-right: 2rem;
+  }
+
+  h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    color: #243f4b;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #243f4b;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #243f4b;
+    font-size: 0.9rem;
+  }
+
+  footer {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #243f4b;
+  }
+
+  footer a {
+    color: #243f4b;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #eee;
+    padding: 4px;
+    height: 40px;
+    width: 40px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  footer a:hover {
+    background: #eee;
+    border-color: #ccc;
+  }
+
+  figure {
+    flex-shrink: 0;
+    border-radius: 1rem;
+    overflow: hidden;
+    width: 200px;
+    height: 200px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .hero-container {
+      flex-direction: column-reverse;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .info {
+      align-items: center;
+      padding-right: 0;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+    }
+
+    figure {
+      margin-bottom: 1.5rem;
+      width: 128px;
+      height: 128px;
+    }
+  }
+  .moving-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .moving-line {
+    position: absolute;
+    right: 0;
+    height: 2px;
+    width: 100%;
+    opacity: 0;
+    animation: lineFlow 2.5s linear infinite;
+    animation-delay: calc(var(--i, 0) * 0.2s);
+  }
+
+  @keyframes lineFlow {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    30% {
+      opacity: 0.7;
+    }
+    70% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+  .moving-vertical-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .moving-vertical-line {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    opacity: 0;
+    animation: verticalLineFlow 2.5s linear infinite;
+    animation-delay: calc(var(--i, 0) * 0.2s);
+  }
+
+  .moving-line:nth-child(1) {
+    --i: 0;
+  }
+  .moving-line:nth-child(2) {
+    --i: 1;
+  }
+  .moving-line:nth-child(3) {
+    --i: 2;
+  }
+  .moving-line:nth-child(4) {
+    --i: 3;
+  }
+  .moving-line:nth-child(5) {
+    --i: 4;
+  }
+  .moving-line:nth-child(6) {
+    --i: 5;
+  }
+
+  .moving-vertical-line:nth-child(1) {
+    --i: 0;
+  }
+  .moving-vertical-line:nth-child(2) {
+    --i: 1;
+  }
+  .moving-vertical-line:nth-child(3) {
+    --i: 2;
+  }
+  .moving-vertical-line:nth-child(4) {
+    --i: 3;
+  }
+  .moving-vertical-line:nth-child(5) {
+    --i: 4;
+  }
+  .moving-vertical-line:nth-child(6) {
+    --i: 5;
+  }
+
+  @keyframes verticalLineFlow {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    30% {
+      opacity: 0.7;
+    }
+    70% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+</style>

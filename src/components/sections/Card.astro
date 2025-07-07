@@ -1,0 +1,198 @@
+---
+// Componente sin contenido interno, solo líneas animadas en bordes
+---
+<div class="animated-card">
+  <!-- Líneas animadas horizontales (arriba) -->
+  <div class="lines top">
+    <div class="line horizontal delay-0"></div>
+    <div class="line horizontal delay-1"></div>
+    <div class="line horizontal delay-2"></div>
+  </div>
+
+  <!-- Líneas animadas horizontales (abajo) -->
+  <div class="lines bottom">
+    <div class="line horizontal reverse delay-0"></div>
+    <div class="line horizontal reverse delay-1"></div>
+    <div class="line horizontal reverse delay-2"></div>
+  </div>
+
+  <!-- Líneas animadas verticales (izquierda) -->
+  <div class="lines left">
+    <div class="line vertical delay-0"></div>
+    <div class="line vertical delay-1"></div>
+    <div class="line vertical delay-2"></div>
+  </div>
+
+  <!-- Líneas animadas verticales (derecha) -->
+  <div class="lines right">
+    <div class="line vertical reverse delay-0"></div>
+    <div class="line vertical reverse delay-1"></div>
+    <div class="line vertical reverse delay-2"></div>
+  </div>
+
+  <!-- Contenido interno (vacío por ahora) -->
+  <div class="card-content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .animated-card {
+    position: relative;
+    width: 100%;
+
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(82, 73, 73, 0.1);
+  }
+
+  .lines {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .top {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+  }
+
+  .bottom {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+  }
+
+  .left {
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+  }
+
+  .right {
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+  }
+
+  .line {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .horizontal {
+    height: 1.5px;
+    width: 128px;
+    background: linear-gradient(90deg, transparent, #252525, transparent);
+    animation: horizontal-move 6s linear infinite;
+  }
+
+  .horizontal.reverse {
+    background: linear-gradient(90deg, transparent, #21406b, transparent);
+    animation: horizontal-reverse 6s linear infinite;
+  }
+
+  .vertical {
+    width: 1.5px;
+    height: 128px;
+    background: linear-gradient(180deg, transparent, #252525, transparent);
+    animation: vertical-move 4s linear infinite;
+  }
+
+  .vertical.reverse {
+    background: linear-gradient(180deg, transparent, #21406b, transparent);
+    animation: vertical-reverse 4s linear infinite;
+  }
+
+  .delay-0 {
+    animation-delay: 0s;
+  }
+
+  .delay-1 {
+    animation-delay: 0.8s;
+  }
+
+  .delay-2 {
+    animation-delay: 1.6s;
+  }
+
+  @keyframes horizontal-move {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100vw);
+      opacity: 0;
+    }
+  }
+
+  @keyframes horizontal-reverse {
+    0% {
+      transform: translateX(100vw);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes vertical-move {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh);
+      opacity: 0;
+    }
+  }
+
+  @keyframes vertical-reverse {
+    0% {
+      transform: translateY(100vh);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+  }
+</style>

@@ -1,0 +1,101 @@
+---
+interface Props {
+  title?: string;
+  decorationStyle?: string;
+}
+const { title, decorationStyle = "bottom-right" } = Astro.props;
+---
+
+<section class={`decorated-section top-left`}>
+  {title && <h2>{title}</h2>}
+  <slot />
+</section>
+
+
+<style>
+.decorated-section {
+  position: relative;
+  top: -250px;
+  max-width: 800px;
+  margin: 0 auto 48px;
+  padding: 2rem;
+  border-radius: 12px;
+
+  /* Nuevo gradiente con mejor contraste y profundidad */
+  background: linear-gradient(
+    to bottom,
+    #efe9de   60%,
+    #bec0a258   100%,
+    #fff2cddf   30%
+  );
+
+  isolation: isolate;
+  overflow: hidden;
+ filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+}
+
+  h2 {
+    margin-bottom: 8px;
+    font-weight: 700;
+    line-height: 1.5;
+    font-size: 1.5rem;
+  }
+
+  /* Fondo de rejilla punteada */
+.decorated-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(#142E23 1px, transparent 0),  /* azul cielo pálido */
+    linear-gradient(#cdc2c2c1 1px, transparent 1px), /* verde menta muy claro */
+    linear-gradient(90deg, #d8c381 1px, transparent 1px); /* arena suave / crema */
+  background-size: 40px 40px, 80px 80px, 80px 80px;
+  background-position: center;
+  opacity: 0.15;
+  z-index: -1;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+}
+``
+
+
+  /* Círculo decorativo */
+  .decorated-section::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 1px dashed #f1ffef;
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .decorated-section.top-left::after {
+    top: -40px;
+    left: -40px;
+  }
+
+  .decorated-section.bottom-right::after {
+    bottom: -40px;
+    right: -40px;
+  }
+
+  .decorated-section.none::after {
+    display: none;
+  }
+
+  @media (width <= 700px) {
+    .decorated-section {
+      margin-bottom: 38px;
+      padding: 1rem;
+    }
+
+    .decorated-section::after {
+      width: 60px;
+      height: 60px;
+    }
+  }
+</style>
